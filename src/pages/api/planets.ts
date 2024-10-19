@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { buildQuery } from '@/utils/buildQuery';
-import { QueryParams } from '@/interface/buildQueryInterface';
+import { QueryParams } from '@/interfaces/buildQueryInterface';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {

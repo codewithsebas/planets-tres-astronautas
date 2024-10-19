@@ -1,115 +1,110 @@
-import Image from "next/image";
-import localFont from "next/font/local";
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+/* eslint-disable react-hooks/exhaustive-deps */
+import Head from "next/head";
+import { useEffect, useState } from "react";
+import usePlanetStore from "@/hooks/usePlanetStore";
+import { fetchPlanets } from "@/services/planetService";
+import CardPlanet from "@/components/CardPlanet";
+import { useRouter } from "next/router";
+import { Earth, Grid2x2X, X } from "lucide-react";
+import Pagination from "@/components/Pagination";
 
 export default function Home() {
-  return (
-    <div
-      className={`${geistSans.variable} ${geistMono.variable} grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
-    >
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/pages/index.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const router = useRouter();
+  const { search: searchQuery, sort: sortQuery, page: pageQuery } = router.query;
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  const [page, setPage] = useState(Number(pageQuery) || 1);
+  const [limit] = useState(5);
+  const [search, setSearch] = useState<string>(Array.isArray(searchQuery) ? searchQuery[0] : searchQuery || "");
+  const [sort, setSort] = useState<string>(Array.isArray(sortQuery) ? sortQuery[0] : sortQuery || "asc");
+  const { planets, setPlanets } = usePlanetStore();
+
+  useEffect(() => {
+    const loadPlanets = async () => {
+      try {
+        const data = await fetchPlanets(page, limit, search, sort);
+        setPlanets(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    loadPlanets();
+  }, [page, limit, search, sort, setPlanets]);
+
+  useEffect(() => {
+    const query = { search, sort, page };
+    router.replace({
+      pathname: '/',
+      query,
+    });
+  }, [search, sort, page]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newSearch = e.target.value;
+    setSearch(newSearch);
+    setPage(1);
+  };
+
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSort(e.target.value);
+    setPage(1);
+  };
+
+  const totalPlanets = planets.length;
+  const totalPages = Math.ceil(totalPlanets / limit);
+
+  return (
+    <>
+      <Head>
+        <title>Planets - Tres Astronautas</title>
+        <meta name="description" content="Planets - Tres Astronautas" />
+        <meta name="keywords" content="Planets" />
+        <meta name="author" content="Sebastian Giraldo" />
+      </Head>
+      <main className="w-full h-full md:h-screen flex flex-col items-center justify-start gap-5 pt-10 sm:pt-20 pb-10">
+        <div className="w-full h-full max-w-4xl flex flex-col gap-5 px-5">
+          <h1 className="text-2xl font-bold">Bienvenido a Tres Astronautas</h1>
+          <div className="w-full flex justify-between gap-2 flex-col sm:flex-row">
+            <div className="w-full p-2 py-2 border rounded-lg  flex justify-between items-center gap-2 ">
+              <Earth size={20} color="#b9b9b9" />
+              <input
+                type="text"
+                value={search}
+                onChange={handleSearchChange}
+                placeholder="Buscar planeta"
+                className="w-full outline-none"
+              />
+              <X className="cursor-pointer" size={20} onClick={() => setSearch("")} />
+            </div>
+            <div className="p-2 border rounded-lg w-full sm:w-fit">
+            <select onChange={handleSortChange} value={sort} className="bg-transparent outline-none px-3 w-full sm:w-auto">
+              <option value="asc" className="w-full">Ascendente</option>
+              <option value="desc" className="w-full">Descendente</option>
+            </select>
+            </div>
+          </div>
+
+
+          {planets.length > 0 ? (
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {
+                planets.map((planet) => (
+                  <CardPlanet key={planet.id} planet={planet} />
+                ))}
+            </div>
+          ) : (
+            <p className="flex items-center flex-col justify-start gap-3 h-full">No hay resultados <Grid2x2X size={20} color="#333" /></p>
+          )}
+
+          {planets.length > 0 && (
+            <Pagination
+              currentPage={page}
+              onPageChange={setPage}
+              totalPages={totalPages}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          )}
         </div>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    </>
   );
 }
