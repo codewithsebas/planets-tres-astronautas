@@ -4,6 +4,10 @@ This application provides you with detailed information about the planets of the
 
 Simply select a planet from the list to access comprehensive and fascinating information about it.
 
+## Deploy
+
+Link Deploy: [https://planets-tres-astronautas.vercel.app/?search=&sort=asc&page=1](https://planets-tres-astronautas.vercel.app/?search=&sort=asc&page=1)
+
 ## First steps
 
 ### Create a project in Supabase
@@ -56,3 +60,23 @@ npm run dev
 ```
 
 And now open [http://localhost:3000](http://localhost:3000) and you can use the App.
+
+## Technologies used
+
+React with Next.js was used for this test, integrating the frontend and backend y Supabase for the database.
+
+In addition, Zustand was used to manage the global state of the application, as well as Tailwind CSS and the React Icons icon library. For the backend, the data inspiration came from api.le-systeme-solaire.net, an API that provides information about planets.
+
+React Documentation: [https://react.dev/reference/react](https://react.dev/reference/react)
+
+Nextjs Documentation:[https://nextjs.org/docs](https://nextjs.org/docs)
+
+SUPABASE Documentation: [https://supabase.com/docs](https://supabase.com/docs)
+
+Tailwindcss Documentation: [https://tailwindcss.com/docs](https://tailwindcss.com/docs)
+
+Zustand Documentation: [https://zustand-demo.pmnd.rs/](https://zustand-demo.pmnd.rs/)
+
+React Icons: [https://react-icons.github.io/react-icons/](https://react-icons.github.io/react-icons/)
+
+API system solaire: [https://api.le-systeme-solaire.net/rest/bodies](https://api.le-systeme-solaire.net/rest/bodies)
