@@ -8,7 +8,7 @@ Simply select a planet from the list to access comprehensive and fascinating inf
 ### Create a project in Supabase
 To start and have your own planet database, log in to [Supabase](https://supabase.com/dashboard/sign-in).
 
-You will find a **New project** button; select your organization and enter a name for your project. You can generate or enter a password for your database.
+If you are new to Supabase, when you log in, you will see the main screen to create a new project. If you have used Supabase before, the **New Project** button will appear. Select your organization and enter a name for your project. You can generate or enter a password for your database.
 
 When you finish creating your project, it will start loading the configuration for your database in Supabase, and your **Project URL** and **Project API Keys** will appear right there.
 
