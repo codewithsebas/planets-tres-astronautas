@@ -25,6 +25,14 @@ When you paste it, you can click on the **Execute Selected** button.
 2. Once you have your table, delete the **CREATE TABLE planets** query and add the following query to insert data into your table go into this TXT file and copy the QUERY Insert into planets. 
 Once pasted, press the **EXECUTE SELECTED** button.
 
+## Clone repository
+
+Clone the repository and follow the steps below:
+
+```bash
+https://github.com/codewithsebas/planets-tres-astronautas.git
+```
+
 ## Configure your local project
 Create a `.env.local` file and define the environment variables.
 `.env.local`
