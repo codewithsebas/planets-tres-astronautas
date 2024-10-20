@@ -10,6 +10,8 @@ import { IoClose, IoEarthSharp } from 'react-icons/io5';
 
 export default function Home() {
   const router = useRouter();
+
+  // Extracts the search, order and page parameters from the URL
   const {
     search: searchQuery,
     sort: sortQuery,
@@ -24,10 +26,13 @@ export default function Home() {
   const [sort, setSort] = useState<string>(
     Array.isArray(sortQuery) ? sortQuery[0] : sortQuery || 'asc'
   );
+
+  // Gets the global status of the planets from the custom hook
   const { planets, setPlanets } = usePlanetStore();
   const [error, setError] = useState<string | null>(null);
   const [notFound, setNotFound] = useState<boolean>(false);
 
+  // Effect that is executed when loading planets according to search, order and page
   useEffect(() => {
     const loadPlanets = async () => {
       try {
@@ -48,6 +53,7 @@ export default function Home() {
     loadPlanets();
   }, [page, limit, search, sort, setPlanets]);
 
+  // Updates the URL when the search, order or page parameters change
   useEffect(() => {
     const query = { search, sort, page };
     router.replace({
@@ -69,6 +75,7 @@ export default function Home() {
     setNotFound(false);
   };
 
+  // Calculates the total number of planets and pages.
   const totalPlanets = planets.length;
   const totalPages = Math.ceil(totalPlanets / limit);
 
@@ -83,7 +90,7 @@ export default function Home() {
       <SpaceBackground>
         <main className="flex h-full min-h-screen w-full flex-col items-center justify-start gap-5 pb-10 pt-10 sm:pt-20">
           <div className="flex h-full w-full max-w-5xl flex-col gap-5 px-5">
-            <h1 className="text-2xl font-bold animate__bounce">
+            <h1 className="animate__bounce text-2xl font-bold">
               Bienvenido a Planetas - Tres Astronautas
             </h1>
             <div className="flex w-full flex-col justify-between gap-2 sm:flex-row">

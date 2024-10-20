@@ -13,8 +13,12 @@ const generateStars = (numStars: number): Star[] => {
 const SpaceBackground: React.FC<SpaceBackgroundProps> = ({ children }) => {
   const [stars, setStars] = useState<Star[]>([]);
   useEffect(() => {
-    setStars(generateStars(200));
+    setStars(generateStars(500));
   }, []);
+
+  // Component that generates an animated background of stars to simulate space.
+  // Creates 500 stars of random size, position and opacity that blink.
+  // Child content is placed on the background, with the stars in the animated background.
 
   return (
     <div className="relative h-full w-full overflow-hidden bg-gradient-to-b from-black to-zinc-950 text-white sm:min-h-screen">

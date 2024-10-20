@@ -1,8 +1,10 @@
 import { create } from 'zustand';
 import { FavoritesStore, Planet } from '@/interfaces/planets';
 
+// Create a Zustand store to manage favorite planets
 const useFavoritesStore = create<FavoritesStore>((set) => ({
   favorites: [],
+  // Function to add a planet to favorites
   addFavorite: (planet: Planet) => {
     set((state) => {
       const updatedFavorites = state.favorites.some(
@@ -17,6 +19,7 @@ const useFavoritesStore = create<FavoritesStore>((set) => ({
       return { favorites: updatedFavorites };
     });
   },
+  // Function to remove a planet from favorites
   removeFavorite: (planetId: number | string) => {
     set((state) => {
       const updatedFavorites = state.favorites.filter(
@@ -31,6 +34,7 @@ const useFavoritesStore = create<FavoritesStore>((set) => ({
   },
 }));
 
+// Loads the favorites stored in localStorage when starting the store
 if (typeof window !== 'undefined') {
   const storedFavorites = JSON.parse(localStorage.getItem('favorites') || '[]');
   useFavoritesStore.setState({ favorites: storedFavorites });

@@ -6,6 +6,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  // API route that handles search, paging and sorting requests.
+  // Constructs a query based on parameters received and returns the results.
   try {
     const { page = 1, limit = 5, search = '', sort = 'asc' } = req.query;
 

@@ -20,6 +20,10 @@ const CardPlanet: React.FC<CardPlanetProps> = ({ planet }) => {
       }
     }
   };
+  // Component that displays a card with a planet's information.
+  // Allows you to mark the planet as a favorite and navigate to a planet detail page.
+  // Displays an image, name, moons, mass and volume of the planet.
+  // The favorite button toggles between marked and unmarked, and is stored in a local state.
   return (
     <div
       onClick={() => router.push(`/planet/${planet.id}`)}

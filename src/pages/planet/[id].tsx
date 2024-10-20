@@ -49,6 +49,8 @@ export default function PlanetDetail() {
     fetchPlanet();
   }, [id]);
 
+  // Planet detail component that handles planet fetching data shows detailed information and allows to mark it as a favorite. It uses Zustand for managing
+  // the status of favorites. Handles different statuses such as loading, error and not found.
   const isFavorite = planet
     ? favorites.some((fav) => fav.id === planet.id)
     : false;

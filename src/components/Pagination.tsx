@@ -1,6 +1,7 @@
 import { PaginationProps } from '@/interfaces/pagination';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
+// Pagination component that allows you to navigate between pages.
 const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   onPageChange,
@@ -8,6 +9,7 @@ const Pagination: React.FC<PaginationProps> = ({
 }) => {
   return (
     <div className="mt-10 flex items-center justify-center gap-2">
+      {/* Displays the current page number and buttons to go forward or backward. */}
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
@@ -22,6 +24,7 @@ const Pagination: React.FC<PaginationProps> = ({
         {currentPage}
       </span>
 
+      {/* Buttons are disabled if you are on the first or last page. */}
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={totalPages < currentPage}
