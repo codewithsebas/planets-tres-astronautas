@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { Planet, PlanetStore } from "@/interfaces/planets";
+import { create } from 'zustand';
+import { Planet, PlanetStore } from '@/interfaces/planets';
 
 const usePlanetStore = create<PlanetStore>((set) => ({
   planets: [],

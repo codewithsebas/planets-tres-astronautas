@@ -1,37 +1,39 @@
-import { PaginationProps } from "@/interfaces/pagination";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { PaginationProps } from '@/interfaces/pagination';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 const Pagination: React.FC<PaginationProps> = ({
-    currentPage,
-    onPageChange,
-    totalPages,
+  currentPage,
+  onPageChange,
+  totalPages,
 }) => {
-    return (
-        <div className="flex justify-center items-center gap-2 mt-10">
-            <button
-                onClick={() => onPageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                className={`p-2 pe-4 flex items-center gap-2 text-black rounded-lg duration-200 hover:bg-slate-50 ${currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-            >
-                <ChevronLeft /> Anterior
-            </button>
+  return (
+    <div className="mt-10 flex items-center justify-center gap-2">
+      <button
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        className={`flex items-center gap-2 rounded-lg p-2 pe-4 duration-200 hover:bg-white/10 ${
+          currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
+        }`}
+      >
+        <IoIosArrowBack /> Anterior
+      </button>
 
-            <span className="flex items-center p-1 px-3 h-fit border rounded-lg shadow-sm duration-200 hover:bg-slate-100">
-                {currentPage}
-            </span>
+      <span className="flex h-fit items-center rounded-lg border p-1 px-3 shadow-sm duration-200 hover:bg-white/10">
+        {currentPage}
+      </span>
 
-            <button
-                onClick={() => onPageChange(currentPage + 1)}
-                disabled={totalPages < currentPage}
-                className={`p-2 ps-4 flex items-center gap-2 text-black rounded-lg duration-200 hover:bg-slate-50 ${totalPages < currentPage ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-            >
-                Siguiente
-                <ChevronRight />
-            </button>
-        </div>
-    );
+      <button
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={totalPages < currentPage}
+        className={`flex items-center gap-2 rounded-lg p-2 ps-4 duration-200 hover:bg-white/10 ${
+          totalPages < currentPage ? 'cursor-not-allowed opacity-50' : ''
+        }`}
+      >
+        Siguiente
+        <IoIosArrowForward />
+      </button>
+    </div>
+  );
 };
 
 export default Pagination;

@@ -1,40 +1,45 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Planets - Three Astronauts
+This application provides you with detailed information about the planets of the solar system. Through an intuitive search engine, you can easily explore the available planets.
 
-## Getting Started
+Simply select a planet from the list to access comprehensive and fascinating information about it.
 
-First, run the development server:
+## First steps
+
+### Create a project in Supabase
+To start and have your own planet database, log in to [Supabase](https://supabase.com/dashboard/sign-in).
+
+You will find a **New project** button; select your organization and enter a name for your project. You can generate or enter a password for your database.
+
+When you finish creating your project, it will start loading the configuration for your database in Supabase, and your **Project URL** and **Project API Keys** will appear right there.
+
+If you miss this screen, you can go to the left side menu, enter **Project Settings**, then **API** , and you will see your **API Settings**.
+
+### Create your table in the database
+
+Here is the link to download the queries needed for the following steps:
+[TXT Query File](public/documentation/Querys.txt)
+
+1. Enter the left side menu and go to **SQL Editor**. Paste the first query to create your `planets` table.
+   When you paste it, you can click on the **Run selected** button.
+
+2. Once you have your table, comment out the **CREATE TABLE planets** query and add the following query to insert data into your table.
+   Once you paste it, you can click on the **Run selected** button.
+
+## Configure your local project
+Create a `.env.local` file and define the environment variables.
+`.env.local`
+
+Once you have your environment variables, paste your **Project URL** as `NEXT_PUBLIC_SUPABASE_URL` and your **Project API Keys** as `NEXT_PUBLIC_SUPABASE_ANON_KEY`:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## You can now run the project 
+By executing the following commands
+```bash
+npm run dev
+```
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+And now open [http://localhost:3000](http://localhost:3000) and you can use the App.

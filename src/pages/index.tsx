@@ -1,30 +1,47 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import Head from "next/head";
-import { useEffect, useState } from "react";
-import usePlanetStore from "@/hooks/usePlanetStore";
-import { fetchPlanets } from "@/services/planetService";
-import CardPlanet from "@/components/CardPlanet";
-import { useRouter } from "next/router";
-import { Earth, Grid2x2X, X } from "lucide-react";
-import Pagination from "@/components/Pagination";
+import Head from 'next/head';
+import { useEffect, useState } from 'react';
+import usePlanetStore from '@/hooks/usePlanetStore';
+import { fetchPlanets } from '@/services/planetService';
+import CardPlanet from '@/components/CardPlanet';
+import { useRouter } from 'next/router';
+import Pagination from '@/components/Pagination';
+import SpaceBackground from '@/components/SpaceBackground';
+import { IoClose, IoEarthSharp } from 'react-icons/io5';
 
 export default function Home() {
   const router = useRouter();
-  const { search: searchQuery, sort: sortQuery, page: pageQuery } = router.query;
+  const {
+    search: searchQuery,
+    sort: sortQuery,
+    page: pageQuery,
+  } = router.query;
 
   const [page, setPage] = useState(Number(pageQuery) || 1);
   const [limit] = useState(5);
-  const [search, setSearch] = useState<string>(Array.isArray(searchQuery) ? searchQuery[0] : searchQuery || "");
-  const [sort, setSort] = useState<string>(Array.isArray(sortQuery) ? sortQuery[0] : sortQuery || "asc");
+  const [search, setSearch] = useState<string>(
+    Array.isArray(searchQuery) ? searchQuery[0] : searchQuery || ''
+  );
+  const [sort, setSort] = useState<string>(
+    Array.isArray(sortQuery) ? sortQuery[0] : sortQuery || 'asc'
+  );
   const { planets, setPlanets } = usePlanetStore();
+  const [error, setError] = useState<string | null>(null);
+  const [notFound, setNotFound] = useState<boolean>(false);
 
   useEffect(() => {
     const loadPlanets = async () => {
       try {
         const data = await fetchPlanets(page, limit, search, sort);
-        setPlanets(data);
+
+        if (data.length === 0) {
+          setNotFound(true);
+        } else {
+          setPlanets(data);
+          setNotFound(false);
+        }
       } catch (error) {
         console.error(error);
+        setError('Error al cargar los planetas. Por favor, intenta de nuevo.');
       }
     };
 
@@ -43,11 +60,13 @@ export default function Home() {
     const newSearch = e.target.value;
     setSearch(newSearch);
     setPage(1);
+    setNotFound(false);
   };
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSort(e.target.value);
     setPage(1);
+    setNotFound(false);
   };
 
   const totalPlanets = planets.length;
@@ -61,50 +80,75 @@ export default function Home() {
         <meta name="keywords" content="Planets" />
         <meta name="author" content="Sebastian Giraldo" />
       </Head>
-      <main className="w-full h-full md:h-screen flex flex-col items-center justify-start gap-5 pt-10 sm:pt-20 pb-10">
-        <div className="w-full h-full max-w-4xl flex flex-col gap-5 px-5">
-          <h1 className="text-2xl font-bold">Bienvenido a Tres Astronautas</h1>
-          <div className="w-full flex justify-between gap-2 flex-col sm:flex-row">
-            <div className="w-full p-2 py-2 border rounded-lg  flex justify-between items-center gap-2 ">
-              <Earth size={20} color="#b9b9b9" />
-              <input
-                type="text"
-                value={search}
-                onChange={handleSearchChange}
-                placeholder="Buscar planeta"
-                className="w-full outline-none"
-              />
-              <X className="cursor-pointer" size={20} onClick={() => setSearch("")} />
+      <SpaceBackground>
+        <main className="flex h-full min-h-screen w-full flex-col items-center justify-start gap-5 pb-10 pt-10 sm:pt-20">
+          <div className="flex h-full w-full max-w-5xl flex-col gap-5 px-5">
+            <h1 className="text-2xl font-bold animate__bounce">
+              Bienvenido a Planetas - Tres Astronautas
+            </h1>
+            <div className="flex w-full flex-col justify-between gap-2 sm:flex-row">
+              <div className="flex w-full items-center justify-between gap-2 rounded-lg border border-white/80 bg-black p-2 py-2">
+                <IoEarthSharp size={20} color="#b9b9b9" />
+                <input
+                  type="text"
+                  value={search}
+                  onChange={handleSearchChange}
+                  placeholder="Buscar planeta"
+                  className="w-full bg-transparent outline-none"
+                />
+                <IoClose
+                  className="cursor-pointer"
+                  size={20}
+                  onClick={() => setSearch('')}
+                />
+              </div>
+              <div className="w-full rounded-lg border border-white/80 bg-black p-2 sm:w-fit">
+                <select
+                  onChange={handleSortChange}
+                  value={sort}
+                  className="w-full bg-transparent px-3 outline-none sm:w-auto"
+                >
+                  <option value="asc" className="w-full bg-black">
+                    Ascendente
+                  </option>
+                  <option value="desc" className="w-full bg-black">
+                    Descendente
+                  </option>
+                </select>
+              </div>
             </div>
-            <div className="p-2 border rounded-lg w-full sm:w-fit">
-            <select onChange={handleSortChange} value={sort} className="bg-transparent outline-none px-3 w-full sm:w-auto">
-              <option value="asc" className="w-full">Ascendente</option>
-              <option value="desc" className="w-full">Descendente</option>
-            </select>
-            </div>
-          </div>
 
-
-          {planets.length > 0 ? (
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-              {
-                planets.map((planet) => (
+            {error ? (
+              <p className="flex flex-col items-center justify-center gap-3 text-xl">
+                {error} <IoEarthSharp size={20} color="#b9b9b9" />
+              </p>
+            ) : notFound ? (
+              <p className="flex h-full flex-col items-center justify-start gap-3 text-xl">
+                No se encontraron planetas para tu búsqueda{' '}
+                <IoEarthSharp size={30} />
+              </p>
+            ) : planets.length > 0 ? (
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {planets.map((planet) => (
                   <CardPlanet key={planet.id} planet={planet} />
                 ))}
-            </div>
-          ) : (
-            <p className="flex items-center flex-col justify-start gap-3 h-full">No hay resultados <Grid2x2X size={20} color="#333" /></p>
-          )}
+              </div>
+            ) : (
+              <p className="flex h-full flex-col items-center justify-start gap-3 text-xl">
+                Cargando...
+              </p>
+            )}
 
-          {planets.length > 0 && (
-            <Pagination
-              currentPage={page}
-              onPageChange={setPage}
-              totalPages={totalPages}
-            />
-          )}
-        </div>
-      </main>
+            {planets.length > 0 && (
+              <Pagination
+                currentPage={page}
+                onPageChange={setPage}
+                totalPages={totalPages}
+              />
+            )}
+          </div>
+        </main>
+      </SpaceBackground>
     </>
   );
 }

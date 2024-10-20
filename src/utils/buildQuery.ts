@@ -1,6 +1,6 @@
 import { supabase } from '@/lib/supabaseClient';
 import { getPagination } from './pagination';
-import { QueryParams } from '@/interface/buildQueryInterface';
+import { QueryParams } from '@/interfaces/buildQueryInterface';
 
 export const buildQuery = (params: QueryParams) => {
   const { page, limit, search, sort } = params;

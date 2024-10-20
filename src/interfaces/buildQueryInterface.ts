@@ -1,6 +1,6 @@
 export interface QueryParams {
-    page: number;
-    limit: number;
-    search: string;
-    sort: 'asc' | 'desc';
+  page: number;
+  limit: number;
+  search: string;
+  sort: 'asc' | 'desc';
 }
